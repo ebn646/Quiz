@@ -15,47 +15,47 @@ const initModel = {
         answers:[
             {
                 id:'a',
-                answer:'Choice a',
+                answer:'Choice 1 a',
               },
               {
                 id:'b',
-                answer:'Choice b',
+                answer:'Choice 1 b',
               },
               {
                 id:'c',
-                answer:'Choice c'
+                answer:'Choice 1 c'
               }
         ],
         correctAnswer: 'a'
       },
       {
         id: 1,
-        question:'Question 1',
+        question:'Question 2',
         answers:[
             {
-                a:'Choice a',
+                a:'Choice 2 a',
               },
               {
-                b:'Choice b',
+                b:'Choice 2 b',
               },
               {
-                c:'Choice c'
+                c:'Choice 2 c'
               }
         ],
         correctAnswer: 'a'
       },
       {
         id: 2,
-        question:'Question 1',
+        question:'Question 3',
         answers:[
           {
-            a:'Choice a',
+            a:'Choice 3 a',
           },
           {
-            b:'Choice b',
+            b:'Choice 3 b',
           },
           {
-            c:'Choice c'
+            c:'Choice 3 c'
           }
         ],
         correctAnswer: 'a'
@@ -65,20 +65,29 @@ const initModel = {
     correctAnswers:0
   }
 
-  const MSGS = {
-      GO_NEXT: 'GO-NEXT'
-  }
-
  function view(model){
      return div([
          div('Quiz on Important Facts'),
+         div('.question', model.questions[model.currentQuestion].question),
          div(
          ul('#answer-menu', model.questions[model.currentQuestion].answers.map( item =>
-            li(item.id, item.answer))
+            li({id:item.id}, item.answer))
           )),
          div([
-            button({ },'Previous Question'),
-            button({ },'Next Question')
+            button({ 
+              onclick: function (e) {
+                console.log('go to Previous Question!')
+                update()
+                e.preventDefault()
+              }
+            }
+            ,'Previous Question'),
+            button({ 
+              onclick: function (e) {
+                update(MSGS.GO_NEXT,model)
+                e.preventDefault()
+              }
+            },'Next Question')
          ])
      ])
  }
@@ -86,19 +95,20 @@ const initModel = {
  function update(msg,model){
     switch(msg){
         case MSGS.GO_NEXT:
-            return { ...model, currentQuestion: currentQuestion++ }
+            console.log('update go next was called!')
+            return { ...model, currentQuestion: model.currentQuestion++ }
         return model;
     }
  }
+
 // Impure app method
 
 function app(model,update,view,node){
-    let model = initModel;
+    model = initModel;
     let currentView = view(model);
     node.appendChild(currentView);
 }
 
-app(initModel,update,view,rootNode);
+const rootNode = document.getElementById('app');
 
- const rootNode = document.getElementById('app');
- rootNode.appendChild(view(initModel))
+app(initModel,update,view,rootNode);
