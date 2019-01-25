@@ -1,3 +1,6 @@
+
+import { h, diff, patch } from 'virtual-dom';
+import createElement from 'virtual-dom/create-element';
 import view from './view';
 import { MSGS } from './update';
 import initModel from './model';
@@ -40,7 +43,10 @@ import initModel from './model';
 function app(initModel,update,view,node){
     let model = initModel;
     let currentView = view(dispatch, answer, model);
-    node.appendChild(currentView);
+
+    let rootNode = createElement(currentView);
+    node.appendChild(rootNode);
+    //node.appendChild(currentView);
 
     function answer(msg,model,answer){
       var updated = update(msg,model,answer)
@@ -50,7 +56,9 @@ function app(initModel,update,view,node){
     function dispatch(msg,model){
       model = update(msg,model);
       const updatedView = view(dispatch, answer, model);
-      node.replaceChild(updatedView, currentView);
+      const patches = diff(currentView, updatedView);
+      rootNode = patch(rootNode, patches);
+      //node.replaceChild(updatedView, currentView);
       currentView = updatedView;
     }
 }

@@ -3,62 +3,62 @@ const initModel = {
     questions:[
       {
         id: 0,
-        question:'Question 1',
+        question:'How many stars has the American flag got?',
         correctAnswer: 'a',
         isCorrect: false,
         answers:[
             {
                 id:'a',
-                answer:'Choice 1 a',
+                answer:'Fifty',
               },
               {
                 id:'b',
-                answer:'Choice 1 b',
+                answer:'Forty-eight',
               },
               {
                 id:'c',
-                answer:'Choice 1 c'
+                answer:'Fifty-two'
               }
         ],
       },
       {
         id: 1,
-        question:'Question 2',
+        question:'In which European city can you find the home of Anne Frank?',
         correctAnswer: 'c',
         isCorrect: false,
         answers:[
             {
                 id:'a',
-                answer:'Choice 2 a',
+                answer:'Hamburg',
               },
               {
                 id:'b',
-                answer:'Choice 2 b',
+                answer:'Paris',
               },
               {
                 id:'c',
-                answer:'Choice 2 c'
+                answer:'Amsterdam'
               }
         ],
       },
       {
         id: 2,
-        question:'Question 3',
+        question:'According to the Bible, who was the first murderer?',
         correct: 'a',
         correctAnswer: 'b',
         isCorrect: false,
         answers:[
           {
             id:'a',
-            answer:'Choice 3 a',
+            answer:'Abel',
           },
           {
             id:'b',
-            answer:'Choice 3 b',
+            answer:'Cain',
           },
           {
             id:'c',
-            answer:'Choice 3 c'
+            answer:'Jesus'
           }
         ],
       }
