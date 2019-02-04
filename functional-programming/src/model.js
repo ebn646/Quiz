@@ -44,7 +44,6 @@ const initModel = {
       {
         id: 2,
         question:'According to the Bible, who was the first murderer?',
-        correct: 'a',
         correctAnswer: 'b',
         isCorrect: false,
         answers:[

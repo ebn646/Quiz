@@ -1,52 +1,39 @@
 import hh from 'hyperscript-helpers';
-//import h from 'hyperscript';
 import { h, diff, patch } from 'virtual-dom';
-// import createElement from 'virtual-dom/create-element';
 import { MSGS } from './update';
 
 const { pre, div, button, ul, li, input, label,form, fieldset } = hh(h);
 
 const buttonSet = (dispatch,model) => {
-    if(!model.showSumbitButton)
+
         return div({ className: "center mw5 mw6-ns hidden mv4" },
-        [
-            button({ 
-                className: "f5 no-underline black bg-animate hover-bg-black hover-white inline-flex items-center pa3 ba border-box",
-                onclick: function (e) {
-                dispatch(MSGS.GO_PREV,model);
-                e.preventDefault()
-                }
-            }
-            ,'Previous'),
-            button({ 
-                className: "f5 no-underline black bg-animate hover-bg-black hover-white inline-flex items-center pa3 ba border-box",
-                onclick: function (e) {
-                dispatch(MSGS.GO_NEXT,model);
-                }
-            },'Next')
-        ])
-
-    if(model.showSumbitButton)
-        return div(
-            button({ 
-            onclick: function (e) {
-                dispatch(MSGS.GET_RESULTS,model);
-                }
-            },'SUBMIT')
-        )
+            [
+                // button({ 
+                //     className: "f5 no-underline black bg-animate hover-bg-black hover-white inline-flex items-center pa3 ba border-box",
+                //     onclick: function (e) {
+                //     dispatch(MSGS.GO_PREV,model);
+                //     e.preventDefault()
+                //     }
+                // }
+                // ,'Previous'),
+                button({ 
+                    className: "f5 no-underline black bg-animate hover-bg-black hover-white inline-flex items-center pa3 ba border-box",
+                    onclick: function (e) {
+                    dispatch(MSGS.GO_NEXT,model);
+                    }
+                },'Next'),
+                div(
+                    button({ 
+                        className:"submitbtn d-none",
+                        onclick: function (e) {
+                            dispatch(MSGS.GET_RESULTS,model);
+                            }
+                        },'SUBMIT')
+                )
+            ]) 
 }
 
-const submitButton = () =>{
-    return div(
-        button({ 
-        onclick: function (e) {
-            dispatch(MSGS.GET_RESULTS,model);
-            }
-        },'SUBMIT')
-    )
-}
-
-const questionPanel = (answer,model) =>{
+const questionPanel = (dispatch,answer,model) =>{
     // return the current question data based on the current state
     return div({ className: "center mw5 mw6-ns hidden mv4" },
     [
@@ -60,10 +47,11 @@ const questionPanel = (answer,model) =>{
                     input({
                         className: "mr2",
                         type: "radio",
-                        name: 'name-' + model.questions[model.currentQuestion].id,
+                        name: model.questions[model.currentQuestion].id,
                         value: item.id,
-                        id: item.id,
+                        id: item.answer,
                         onchange: e => {
+                            console.log('change',e.target.checked)
                             let selected = e.target.value;
                             let id = e.target.getAttribute('id');
                             var obj = {
@@ -71,6 +59,9 @@ const questionPanel = (answer,model) =>{
                                 id: id
                             }
                             answer(MSGS.ON_ANSWER,model,obj);
+                            setTimeout(() => {
+                                dispatch(MSGS.GO_NEXT,model);
+                            },1000)
                         }
                     }),
                     label({ className: 'mr2' }, item.answer),
@@ -122,8 +113,12 @@ function view(dispatch,answer,model){
         ]);
     }
 
+    if(model.showSumbitButton){
+        var submit = document.querySelector('.submitbtn').classList.remove('d-none');
+    }
+
     return div({ className: 'mv6 center'},[
-        questionPanel(answer,model),
+        questionPanel(dispatch,answer,model),
         buttonSet(dispatch,model)
     ]);
 } 
